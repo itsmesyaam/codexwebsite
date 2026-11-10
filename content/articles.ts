@@ -2,15 +2,15 @@ import type { RegulationId } from "@/content/regulations";
 import type { FAQ } from "@/content/types";
 
 export const categories = [
-  { key: "ai", name: "AI and innovation" },
-  { key: "engineering", name: "Software engineering" },
-  { key: "healthcare", name: "Healthcare technology" },
-  { key: "automation", name: "Business automation" },
-  { key: "transformation", name: "Digital transformation" },
+  { slug: "custom-software-decisions", name: "Custom software decisions", description: "Frameworks, trade-offs, and economics of building vs buying business software." },
+  { slug: "business-process-growth", name: "Business process and growth", description: "Operational automation, inventory control, and replacing spreadsheet sprawl." },
+  { slug: "gcc-tech-compliance", name: "GCC tech and compliance", description: "ZATCA Fatoora, UAE e-invoicing, and regional data protection regulations." },
+  { slug: "healthcare-digital", name: "Healthcare digital", description: "Hospital workflows, ABDM, NPHIES, and health information exchanges." },
+  { slug: "working-with-indian-partner", name: "Working with an Indian development partner", description: "Time zone alignment, IP ownership, NDAs, and remote engineering collaboration." },
 ] as const;
 
-export type CategoryKey = (typeof categories)[number]["key"];
-export const categoryName = (key: CategoryKey) => categories.find((c) => c.key === key)?.name ?? key;
+export type CategorySlug = (typeof categories)[number]["slug"];
+export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
 
 export type Block =
   | { type: "p"; text: string }
@@ -26,17 +26,21 @@ export type Article = {
   title: string; // H1
   metaTitle: string;
   description: string;
-  category: CategoryKey;
+  category: CategorySlug;
   date: string; // ISO
   updated?: string; // compliance posts show "Last updated"
+  draft?: boolean; // drafts only show in dev mode
+  author: { name: string | null; role: string | null }; // TODO: Named author once assigned
+  sources?: { title: string; url: string }[];
   body: Block[];
   faqs?: FAQ[];
   regulationIds?: RegulationId[]; // rendered as official sources
   service: { label: string; href: string }; // every post links to one service or product page
+  leadMagnet?: { label: string; href: string };
   cta: { label: string; href: string };
 };
 
-const processReview = { label: "Book a free process review", href: "/contact/" };
+const defaultCta = { label: "Book a free process review", href: "/contact/" };
 
 export const articles: Article[] = [
   {
@@ -45,8 +49,13 @@ export const articles: Article[] = [
     metaTitle: "Custom Software vs Off-the-Shelf: A Decision Guide | CodXQ",
     description:
       "When to buy software and when to build it, with a 10-question scorecard for growing businesses in India, the GCC and Europe.",
-    category: "transformation",
+    category: "custom-software-decisions",
     date: "2026-11-10",
+    draft: true, // Seeded draft per playbook #1
+    author: { name: null, role: null },
+    sources: [
+      { title: "Gartner IT Key Metrics Research", url: "https://www.gartner.com" },
+    ],
     body: [
       { type: "p", text: "Most businesses should buy most of their software. Email, payroll, basic accounting and video calls work the same way in almost every company, and mature products do them well and cheaply. Custom software earns its cost in a narrower place: the processes that make your business different, or the ones no product handles properly." },
       { type: "h2", text: "The simple rule" },
@@ -94,7 +103,8 @@ export const articles: Article[] = [
       { type: "p", text: "You rarely have to choose all or nothing. A common pattern is to keep packaged accounting or CRM software and build a custom layer for operations, connected through APIs. You get the reliability of a mature product where it fits, and software built for you where it doesn't." },
     ],
     service: { label: "Custom software development", href: "/custom-software-development/" },
-    cta: processReview,
+    leadMagnet: { label: "Download the Build vs Buy Scorecard", href: "/resources/build-vs-buy-framework/" },
+    cta: defaultCta,
   },
   {
     slug: "uae-e-invoicing-2027-erp-checklist",
@@ -102,10 +112,16 @@ export const articles: Article[] = [
     metaTitle: "UAE E-Invoicing 2027: ERP Readiness Checklist | CodXQ",
     description:
       "What changes with UAE e-invoicing, who must comply first, and what your ERP or billing system must do before it connects to an accredited service provider.",
-    category: "automation",
+    category: "gcc-tech-compliance",
     date: "2026-11-10",
     updated: "2026-11-10",
+    draft: true, // Seeded draft per playbook #10
+    author: { name: null, role: null },
     regulationIds: ["uae-einvoicing"],
+    sources: [
+      { title: "UAE Ministry of Finance E-Invoicing Portal", url: "https://mof.gov.ae" },
+      { title: "Federal Tax Authority E-Invoicing Technical Guidance", url: "https://tax.gov.ae" },
+    ],
     body: [
       { type: "p", text: "The UAE is moving business invoices from PDFs and paper to structured electronic data. For finance teams it's a tax change. For whoever runs your ERP or billing system, it's a software project with a deadline. This guide covers the software side." },
       { type: "h2", text: "What is UAE e-invoicing?" },
@@ -174,7 +190,8 @@ export const articles: Article[] = [
       },
     ],
     service: { label: "API integration services", href: "/services/api-integration/" },
-    cta: processReview,
+    leadMagnet: { label: "Get the UAE E-Invoicing Checklist", href: "/resources/uae-e-invoicing-checklist/" },
+    cta: defaultCta,
   },
   {
     slug: "signs-your-business-has-outgrown-excel",
@@ -182,8 +199,9 @@ export const articles: Article[] = [
     metaTitle: "9 Signs Your Business Has Outgrown Excel | CodXQ",
     description:
       "Spreadsheets are a great start and a risky foundation. Nine signs it's time to move a critical process into proper software, and how to do it safely.",
-    category: "transformation",
+    category: "business-process-growth",
     date: "2026-11-10",
+    author: { name: null, role: null },
     body: [
       { type: "p", text: "Excel is where most good processes start. It's flexible, everyone knows it, and it costs nothing extra. The trouble begins when a spreadsheet quietly becomes the system the business runs on. These are the signs that's happened." },
       { type: "h2", text: "1. Several people edit the same file and overwrite each other" },
@@ -208,7 +226,8 @@ export const articles: Article[] = [
       { type: "p", text: "Not every spreadsheet should become software. Start with the one that causes the most errors or delays. Map the process it supports, then move that process into a simple multi-user application with validation, permissions and an audit trail. Keep an export so people can still analyse data in Excel. That part of Excel was never the problem." },
     ],
     service: { label: "Legacy software modernization", href: "/services/legacy-modernization/" },
-    cta: processReview,
+    leadMagnet: { label: "Download ERP Readiness Checklist", href: "/resources/erp-readiness-checklist/" },
+    cta: defaultCta,
   },
   {
     slug: "how-to-write-a-software-brief",
@@ -216,8 +235,9 @@ export const articles: Article[] = [
     metaTitle: "How to Write a Software Brief Vendors Can Quote | CodXQ",
     description:
       "What to put in a two-page software brief so vendors understand the same project, and how to compare the quotes you get back.",
-    category: "engineering",
+    category: "working-with-indian-partner",
     date: "2026-11-10",
+    author: { name: null, role: null },
     body: [
       { type: "p", text: "Vague briefs get vague quotes, and big price differences between vendors usually mean they understood different projects. A good brief fits on two pages and describes the problem, the people and the constraints. It doesn't need a long feature list." },
       { type: "h2", text: "What to include" },
@@ -259,7 +279,8 @@ export const articles: Article[] = [
       },
     ],
     service: { label: "Custom software development", href: "/custom-software-development/" },
-    cta: processReview,
+    leadMagnet: { label: "Download 2-Page Brief Template", href: "/resources/software-brief-template/" },
+    cta: defaultCta,
   },
   {
     slug: "nabidh-vs-malaffi-vs-riayati",
@@ -267,10 +288,16 @@ export const articles: Article[] = [
     metaTitle: "NABIDH vs Malaffi vs Riayati: Which Applies to You? | CodXQ",
     description:
       "The UAE's three health information exchanges explained: which one your facility connects to, what that means for your software, and questions to ask vendors.",
-    category: "healthcare",
+    category: "healthcare-digital",
     date: "2026-11-10",
     updated: "2026-11-10",
+    author: { name: null, role: null },
     regulationIds: ["uae-health-data"],
+    sources: [
+      { title: "NABIDH Official Portal (Dubai Health Authority)", url: "https://nabidh.ae" },
+      { title: "Malaffi Official Portal (Department of Health Abu Dhabi)", url: "https://malaffi.ae" },
+      { title: "Riayati Platform (MOHAP UAE)", url: "https://mohap.gov.ae" },
+    ],
     body: [
       { type: "p", text: "The UAE has three health information exchanges. Which one your facility connects to depends on who issued your licence, not on where your patients live or which software you use." },
       { type: "h2", text: "The short answer" },
@@ -303,6 +330,7 @@ export const articles: Article[] = [
       },
     ],
     service: { label: "Custom healthcare software", href: "/industries/healthcare/" },
+    leadMagnet: { label: "Healthcare Software Compliance Guide", href: "/resources/healthcare-compliance-guide/" },
     cta: { label: "Book a hospital system demo", href: "/products/hospital-management-system/demo/" },
   },
   {
@@ -311,8 +339,12 @@ export const articles: Article[] = [
     metaTitle: "AI Document Processing: Where It Works and Where It Doesn't | CodXQ",
     description:
       "AI can read invoices and forms well enough to save real time, and also make confident mistakes. How to design the process so it helps.",
-    category: "ai",
+    category: "custom-software-decisions",
     date: "2026-11-10",
+    author: { name: null, role: null },
+    sources: [
+      { title: "ACM Transactions on Intelligent Systems", url: "https://dl.acm.org" },
+    ],
     body: [
       { type: "p", text: "AI can read invoices, forms and purchase orders well enough to save real time. It can also produce confident mistakes. The difference lies in how the process around it is designed." },
       { type: "h2", text: "Where it works well" },
@@ -343,12 +375,25 @@ export const articles: Article[] = [
       { type: "p", text: "Documents often contain personal data. Before choosing a model, decide where processing happens, which providers may see the data, and whether they keep it or train on it. In regulated sectors such as healthcare and finance, data-residency rules may make that choice for you." },
     ],
     service: { label: "AI and business automation", href: "/services/ai-automation/" },
-    cta: processReview,
+    leadMagnet: { label: "Download ERP Readiness Checklist", href: "/resources/erp-readiness-checklist/" },
+    cta: defaultCta,
   },
 ];
 
-export const getArticles = () => [...articles].sort((a, b) => b.date.localeCompare(a.date));
-export const getArticle = (slug: string) => articles.find((a) => a.slug === slug);
+export const getArticles = (includeDrafts = false) =>
+  articles
+    .filter((a) => includeDrafts || !a.draft)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+export const getArticle = (slug: string, includeDrafts = false) => {
+  const art = articles.find((a) => a.slug === slug);
+  if (!art) return undefined;
+  if (art.draft && !includeDrafts) return undefined;
+  return art;
+};
+
+export const getArticlesByCategory = (categorySlug: CategorySlug, includeDrafts = false) =>
+  getArticles(includeDrafts).filter((a) => a.category === categorySlug);
 
 export function readingTime(a: Article) {
   const words = a.body
@@ -368,7 +413,10 @@ export function readingTime(a: Article) {
   return Math.max(1, Math.round(words / 220));
 }
 
-export function relatedArticles(a: Article, n = 3) {
-  const others = getArticles().filter((x) => x.slug !== a.slug);
-  return [...others.filter((x) => x.category === a.category), ...others.filter((x) => x.category !== a.category)].slice(0, n);
+export function relatedArticles(a: Article, n = 3, includeDrafts = false) {
+  const others = getArticles(includeDrafts).filter((x) => x.slug !== a.slug);
+  return [
+    ...others.filter((x) => x.category === a.category),
+    ...others.filter((x) => x.category !== a.category),
+  ].slice(0, n);
 }

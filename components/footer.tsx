@@ -3,10 +3,11 @@ import { site, whatsappLink } from "@/content/site";
 import { services } from "@/content/services";
 import { industries } from "@/content/industries";
 import { Container, Logo } from "@/components/ui";
+import { ProductMention } from "@/components/product-mention";
 
 type L = [label: string, href: string];
 
-const company: L[] = [
+const companyLinks: L[] = [
   ["About", "/about/"],
   ["How we work", "/how-we-work/"],
   ["Our work", "/case-studies/"],
@@ -15,22 +16,33 @@ const company: L[] = [
   ["Contact", "/contact/"],
 ];
 
-const markets: L[] = [
+const locationLinks: L[] = [
   ["India", "/custom-software-development/india/"],
   ["UAE", "/custom-software-development/uae/"],
   ["Dubai", "/custom-software-development/uae/dubai/"],
   ["Abu Dhabi", "/custom-software-development/uae/abu-dhabi/"],
   ["Saudi Arabia", "/custom-software-development/saudi-arabia/"],
   ["Riyadh", "/custom-software-development/saudi-arabia/riyadh/"],
+  ["United Kingdom", "/custom-software-development/united-kingdom/"],
   ["Germany", "/custom-software-development/germany/"],
+  ["Netherlands", "/custom-software-development/netherlands/"],
+];
+
+const resourceLinks: L[] = [
+  ["All Resources", "/resources/"],
+  ["Cost Estimator", "/resources/custom-software-cost-estimator/"],
+  ["Build vs Buy Scorecard", "/resources/build-vs-buy-scorecard/"],
+  ["UAE E-Invoicing Checklist", "/resources/uae-e-invoicing-erp-readiness-checklist/"],
+  ["ZATCA Phase 2 Checklist", "/resources/zatca-phase-2-integration-checklist/"],
+  ["Software RFP Template", "/resources/software-procurement-rfp-template/"],
 ];
 
 function Col({ title, links }: { title: string; links: L[] }) {
   return (
     <div>
       {/* Footer column titles are labels, not headings (heading-structure rule) */}
-      <p className="text-sm font-medium">{title}</p>
-      <ul className="mt-4 space-y-3 text-sm">
+      <p className="text-xs font-semibold uppercase tracking-wider text-fg">{title}</p>
+      <ul className="mt-4 space-y-2.5 text-xs">
         {links.map(([label, href]) => (
           <li key={href}>
             <Link href={href} className="text-muted transition-colors hover:text-fg">
@@ -45,41 +57,41 @@ function Col({ title, links }: { title: string; links: L[] }) {
 
 export function Footer() {
   const serviceLinks: L[] = [
-    ["Custom software development", "/custom-software-development/"],
+    ["Custom software hub", "/custom-software-development/"],
     ...services.slice(0, 7).map((s): L => [s.name, `/services/${s.slug}/`]),
   ];
-  const industryLinks = industries.map((i): L => [i.name, `/industries/${i.slug}/`]);
+  const industryLinks: L[] = industries.map((i): L => [i.name, `/industries/${i.slug}/`]);
 
   return (
     <footer id="site-footer" className="border-t border-line bg-surface">
       <Container className="py-16 sm:py-20">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
-          <div className="max-w-sm md:col-span-2 lg:col-span-1">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-16">
+          <div className="sm:col-span-2 md:col-span-3 lg:col-span-2 pe-4">
             <Logo />
-            <p className="mt-5 text-sm leading-relaxed text-muted">{site.description}</p>
-            <p className="mt-5 text-sm">
-              CodXQ also builds {site.product.name}, a hospital management system.{" "}
-              <Link href={site.product.href} className="text-accent hover:underline">
-                See the product →
-              </Link>
-            </p>
-            <ul className="mt-6 space-y-2 text-sm">
+            <p className="mt-4 text-xs leading-relaxed text-muted max-w-sm">{site.description}</p>
+            
+            <div className="mt-6 max-w-sm">
+              <ProductMention />
+            </div>
+
+            <ul className="mt-6 space-y-2 text-xs">
               {site.email && (
                 <li>
-                  <a href={`mailto:${site.email}`} className="hover:text-accent">
+                  <a href={`mailto:${site.email}`} className="text-muted hover:text-fg">
                     {site.email}
                   </a>
                 </li>
               )}
               <li>
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">
                   WhatsApp {site.whatsapp.display}
                 </a>
               </li>
               <li className="text-muted">Kochi, Kerala, India</li>
             </ul>
+
             {site.social.length > 0 && (
-              <ul className="mt-6 flex flex-wrap gap-4 text-sm">
+              <ul className="mt-5 flex flex-wrap gap-3 text-xs">
                 {site.social.map((s) => (
                   <li key={s.href}>
                     <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-fg">
@@ -90,23 +102,27 @@ export function Footer() {
               </ul>
             )}
           </div>
-          <Col title="Company" links={company} />
+
           <Col title="Services" links={serviceLinks} />
           <Col title="Industries" links={industryLinks} />
-          <Col title="Markets" links={markets} />
+          <Col title="Locations" links={locationLinks} />
+          <div className="space-y-8">
+            <Col title="Resources" links={resourceLinks} />
+            <Col title="Company" links={companyLinks} />
+          </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-line pt-8 text-sm text-muted lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 border-t border-line pt-8 text-xs text-muted lg:flex-row lg:items-center lg:justify-between">
           <p>© {new Date().getFullYear()} CodXQ. All rights reserved.</p>
           <p className="font-medium text-fg">{site.tagline}</p>
           <ul className="flex gap-6">
             <li>
-              <Link href="/privacy/" className="hover:text-fg">
+              <Link href="/privacy/" className="hover:text-fg transition-colors">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="/terms/" className="hover:text-fg">
+              <Link href="/terms/" className="hover:text-fg transition-colors">
                 Terms and Conditions
               </Link>
             </li>

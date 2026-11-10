@@ -32,3 +32,5 @@ export function pageMeta({
     ...(noindex ? { robots: { index: false, follow: true } } : {}),
   };
 }
+
+export const buildMetadata = pageMeta;

@@ -29,14 +29,18 @@ export function organizationGraph() {
         name: site.name,
         parentOrganization: { "@id": ORG },
         url: abs("/"),
-        address: {
-          "@type": "PostalAddress",
-          ...(a.street ? { streetAddress: a.street } : {}),
-          addressLocality: a.locality,
-          addressRegion: a.region,
-          ...(a.postalCode ? { postalCode: a.postalCode } : {}),
-          addressCountry: a.countryCode,
-        },
+        ...(a
+          ? {
+              address: {
+                "@type": "PostalAddress",
+                ...(a.street ? { streetAddress: a.street } : {}),
+                addressLocality: a.locality,
+                addressRegion: a.region,
+                ...(a.postalCode ? { postalCode: a.postalCode } : {}),
+                addressCountry: a.countryCode,
+              },
+            }
+          : {}),
         openingHours: site.hours.schema,
         ...(site.phone ? { telephone: site.phone } : {}),
         ...(site.email ? { email: site.email } : {}),

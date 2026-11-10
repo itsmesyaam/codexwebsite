@@ -14,14 +14,17 @@
 /coverage
 
 # next.js
+.next/
 /.next/
+out/
 /out/
 
 # production
 /build
 
-# misc
-.DS_Store
+# local artifacts
+_local/
+.vscode/
 *.pem
 
 # debug

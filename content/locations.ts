@@ -40,6 +40,7 @@ export type Location = {
   integrations: string[];
   faqs: FAQ[];
   cta: string;
+  noindex?: boolean; // Quality gate: true if lacking 5 verified local proof points
 };
 
 /* ---------- Shared building blocks ---------- */
@@ -405,6 +406,156 @@ export const locations: Location[] = [
       },
     ],
     cta: "Book a process review in Saudi time",
+  },
+  {
+    country: "saudi-arabia",
+    city: "jeddah",
+    name: "Jeddah",
+    market: "gcc",
+    h1: "Custom software development in Jeddah",
+    title: "Custom Software Development in Jeddah | CodXQ",
+    description:
+      "Arabic-first custom software, ERP and apps for Jeddah commercial and logistics companies, with ZATCA integration and Saudi data hosting.",
+    intro:
+      "CodXQ builds custom software for commercial, trading and logistics businesses in Jeddah from our engineering team in Kochi, India, 2.5 hours ahead. We build Arabic-first systems integrated with ZATCA and compliant with Saudi PDPL.",
+    facts: ksaFacts,
+    builds: {
+      title: "Software we build for Jeddah companies",
+      items: [
+        "Trading, port logistics and distribution ERP systems",
+        "Arabic-first customer ordering and partner portals",
+        "Field sales and delivery tracking apps",
+        "Integrations with ZATCA Fatoora and regional payment gateways",
+      ],
+    },
+    industries: { title: "Industries we serve in Jeddah", slugs: ["trading-distribution", "logistics", "retail-ecommerce", "healthcare"] },
+    rules: { title: "Saudi compliance your software needs in 2026–2027", ids: ["ksa-einvoicing", "ksa-pdpl", "ksa-nphies"], notes: [] },
+    working: { title: "Working with a Kochi team from Jeddah", items: ksaWorking },
+    integrations: ksaIntegrations,
+    faqs: [
+      { q: "Do you have an office in Jeddah?", a: officeAnswer("Jeddah") },
+      {
+        q: "Can you connect our ERP to ZATCA Fatoora?",
+        a: "Yes. We assess your existing billing logic, map fields to the required ZATCA standard, clean customer records, and validate test invoices well in advance of your deadline.",
+      },
+      {
+        q: "How does the working week align?",
+        a: "Our team operates Monday to Friday, which overlaps with Saudi Arabia's Sunday-to-Thursday week on Monday through Thursday for joint meetings, sprint planning, and live demos.",
+      },
+    ],
+    cta: "Book a process review in Saudi time",
+    noindex: true,
+  },
+  {
+    country: "qatar",
+    name: "Qatar",
+    market: "gcc",
+    h1: "Custom software development for Qatar businesses",
+    title: "Custom Software Development in Qatar | CodXQ",
+    description:
+      "Custom software, portals and ERP for Qatar businesses: bilingual Arabic interfaces, in-country hosting options and seamless team overlap from Kochi.",
+    intro:
+      "CodXQ designs and develops custom software for companies in Qatar from our technology hub in Kochi, India. We are 2.5 hours ahead of Qatar, providing 6.5 hours of daily working overlap for collaborative engineering.",
+    facts: {
+      timeDifference: "Kochi is 2.5 hours ahead of Qatar (AST)",
+      overlap: "About 6.5 hours of shared working time a day",
+      workWeek: "Monday to Thursday overlap (Sunday-to-Thursday week in Qatar)",
+      languages: "Arabic and English, right-to-left",
+      hosting: "Qatar cloud regions or private infrastructure",
+      currency: "QAR or USD",
+    },
+    builds: {
+      title: "Software we build for Qatar businesses",
+      items: [
+        "Operations management and ERP for contracting and trading",
+        "Bilingual Arabic-English customer and vendor portals",
+        "Field inspection and facility service mobile apps",
+        "Payment and accounting system integrations",
+      ],
+    },
+    industries: { title: "Industries we serve in Qatar", slugs: ["construction", "trading-distribution", "real-estate-facilities", "enterprise"] },
+    rules: {
+      title: "Data protection and standards in Qatar",
+      ids: [],
+      notes: [
+        { name: "Qatar Personal Data Privacy Law", text: "Law No. 13 of 2016 regulates processing of personal data in Qatar, requiring transparency, data minimization, and security controls." },
+      ],
+    },
+    working: {
+      title: "How we work with Qatar teams",
+      items: [
+        { name: "Shared working hours", text: "Kochi is 2.5 hours ahead of Qatar. We overlap Monday to Thursday for all ceremonies, workshops, and releases." },
+        { name: "Bilingual design", text: "Arabic and English right-to-left native layouts and reporting." },
+        { name: "Hosting options", text: "Hosting in local cloud regions inside accounts owned entirely by you." },
+        { name: "Contracts and payments", text: "Commercial terms in QAR or USD tied to verified sprint milestones." },
+      ],
+    },
+    integrations: ["Regional payment gateways", "ERP and accounting systems", "WhatsApp Business API", "SMS notifications"],
+    faqs: [
+      { q: "Do you have an office in Qatar?", a: officeAnswer("Qatar") },
+      {
+        q: "Can you build Arabic-first software?",
+        a: "Yes. Every interface is architected for right-to-left layout from day one, with native typography and bilingual database storage.",
+      },
+    ],
+    cta: "Book a process review in Qatar time",
+    noindex: true,
+  },
+  {
+    country: "oman",
+    name: "Oman",
+    market: "gcc",
+    h1: "Custom software development for Oman businesses",
+    title: "Custom Software Development in Oman | CodXQ",
+    description:
+      "Custom software and ERP for Omani businesses: Arabic-first design, VAT-ready billing, local hosting and 7.5 hours of daily working overlap from Kochi.",
+    intro:
+      "CodXQ builds custom business software for companies in Oman from Kochi, India. Being only 1.5 hours ahead of Oman, our working days overlap by 7.5 hours daily, enabling real-time collaboration with your operations team.",
+    facts: {
+      timeDifference: "Kochi is 1.5 hours ahead of Oman time (GST)",
+      overlap: "About 7.5 hours of shared working time a day",
+      workWeek: "Monday to Thursday overlap (Sunday-to-Thursday week in Oman)",
+      languages: "Arabic and English, right-to-left",
+      hosting: "Oman or GCC cloud regions",
+      currency: "OMR or USD",
+    },
+    builds: {
+      title: "Software we build for Omani businesses",
+      items: [
+        "Trading, distribution, and warehouse management software",
+        "Field service and technician dispatch mobile applications",
+        "Bilingual Arabic-English customer ordering portals",
+        "VAT-compliant billing and accounting integrations",
+      ],
+    },
+    industries: { title: "Industries we serve in Oman", slugs: ["trading-distribution", "logistics", "construction", "enterprise"] },
+    rules: {
+      title: "Data protection and tax rules in Oman",
+      ids: [],
+      notes: [
+        { name: "Oman Personal Data Protection Law", text: "Royal Decree No. 6/2022 sets duties for data controllers including consent, access rights, and breach safeguards." },
+        { name: "Oman VAT Compliance", text: "Invoicing and tax determination compliant with the Oman Tax Authority VAT regulations." },
+      ],
+    },
+    working: {
+      title: "How we work with Oman teams",
+      items: [
+        { name: "Exceptional time zone overlap", text: "With only 1.5 hours difference, our teams share 7.5 working hours each day from Monday to Thursday." },
+        { name: "Bilingual interface", text: "Native right-to-left Arabic layouts with English dual support." },
+        { name: "Data governance", text: "Hosted in your own cloud subscription with role-based security." },
+        { name: "Billing & contracts", text: "Invoiced in OMR or USD against completed deliverables." },
+      ],
+    },
+    integrations: ["Local payment gateways", "Tally & Odoo accounting sync", "WhatsApp Business API", "VAT invoice exports"],
+    faqs: [
+      { q: "Do you have an office in Oman?", a: officeAnswer("Oman") },
+      {
+        q: "Does your software support Oman VAT?",
+        a: "Yes. Invoices, credit notes, and tax reports are generated according to Oman VAT requirements, and can sync directly back to your accounts.",
+      },
+    ],
+    cta: "Book a process review in Oman time",
+    noindex: true,
   },
   {
     country: "united-kingdom",
